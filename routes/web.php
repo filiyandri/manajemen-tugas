@@ -23,9 +23,7 @@ Route::post('/tasks', [TaskController::class, 'store'])->middleware('auth');
 Route::get('/tasks', [TaskController::class, 'index'])
     ->middleware('auth');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', '/login');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

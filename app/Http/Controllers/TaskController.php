@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    public function index(Request $request)
+public function index(Request $request)
 {
     $tasks = Task::where('user_id', auth()->id())
         ->when($request->search, function ($query) use ($request) {
@@ -17,7 +17,20 @@ class TaskController extends Controller
         ->latest()
         ->get();
 
-    return view('tasks.index', compact('tasks'));
+    $totalTasks = $tasks->count();
+
+    $completedTasks = $tasks->where('status', 'selesai')->count();
+
+    $progress = $totalTasks > 0
+        ? round(($completedTasks / $totalTasks) * 100)
+        : 0;
+
+    return view('tasks.index', compact(
+        'tasks',
+        'totalTasks',
+        'completedTasks',
+        'progress'
+    ));
 }
 
     public function create()

@@ -8,59 +8,100 @@
     <title>Tugasku</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
     <style>
-        body{
-            background: linear-gradient(135deg,#020617,#0f172a,#1e1b4b);
-            min-height:100vh;
-        }
 
-        .login-card{
-            background: rgba(15,23,42,.85);
-            backdrop-filter: blur(15px);
-            border:1px solid rgba(255,255,255,.08);
-            border-radius:24px;
-            box-shadow:0 0 40px rgba(124,58,237,.25);
-        }
+.login-input{
+    background:rgba(255,255,255,.08);
+    border:none;
+    color:white;
+    padding:12px;
+}
 
-        .logo-box{
-            width:80px;
-            height:80px;
-            border-radius:20px;
-            background:linear-gradient(135deg,#7c3aed,#4f46e5);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            font-size:32px;
-        }
-    </style>
+.login-input:focus{
+    background:rgba(255,255,255,.12);
+    color:white;
+    box-shadow:none;
+    border:1px solid #7c3aed;
+}
+
+.login-input::placeholder{
+    color:#bdbdbd;
+}
+
+.login-btn{
+    background:linear-gradient(
+        135deg,
+        #6366f1,
+        #8b5cf6
+    );
+    border:none;
+    padding:12px;
+    border-radius:12px;
+    color:white;
+    font-weight:600;
+}
+
+.login-btn:hover{
+    opacity:.9;
+    color:white;
+}
+
+</style>
 </head>
 
-<body class="font-sans antialiased text-white">
+<body class="bg-dark">
 
-<div class="min-h-screen d-flex align-items-center justify-content-center">
+<div class="min-vh-100 d-flex justify-content-center align-items-center"
+     style="background: linear-gradient(135deg,#0f172a,#1e1b4b,#312e81);">
 
-    <div class="w-full max-w-md">
+    <div class="container">
 
-        <div class="text-center mb-4">
+        <div class="row justify-content-center">
 
-            <div class="logo-box mx-auto mb-3">
-                📚
+            <div class="col-md-5">
+
+                <div class="text-center mb-4">
+
+                    <div style="
+                        width:90px;
+                        height:90px;
+                        margin:auto;
+                        border-radius:20px;
+                        background:linear-gradient(135deg,#6366f1,#8b5cf6);
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        font-size:40px;
+                    ">
+                        📚
+                    </div>
+
+                    <h1 class="text-white fw-bold mt-3">
+                        Tugasku
+                    </h1>
+
+                    <p class="text-light">
+                        Kelola tugas kuliahmu dengan lebih terorganisir
+                    </p>
+
+                </div>
+
+                <div class="card border-0 shadow-lg"
+                     style="
+                        border-radius:24px;
+                        background:rgba(255,255,255,.08);
+                        backdrop-filter:blur(15px);
+                     ">
+
+                    <div class="card-body p-5">
+
+                        {{ $slot }}
+
+                    </div>
+
+                </div>
+
             </div>
-
-            <h1 class="fw-bold fs-1">
-                Tugasku
-            </h1>
-
-            <p class="text-secondary">
-                Kelola tugas kuliahmu dengan lebih terorganisir
-            </p>
-
-        </div>
-
-        <div class="login-card p-5">
-
-            {{ $slot }}
 
         </div>
 

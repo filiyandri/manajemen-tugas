@@ -1,52 +1,102 @@
 <x-guest-layout>
+
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        <div class="mb-3">
+            <label class="form-label text-white">
+                Nama Lengkap
+            </label>
+
+            <input
+                type="text"
+                name="name"
+                value="{{ old('name') }}"
+                class="form-control login-input"
+                placeholder="Masukkan nama lengkap"
+                required>
+
+            @error('name')
+                <small class="text-danger">
+                    {{ $message }}
+                </small>
+            @enderror
         </div>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <div class="mb-3">
+            <label class="form-label text-white">
+                Email
+            </label>
+
+            <input
+                type="email"
+                name="email"
+                value="{{ old('email') }}"
+                class="form-control login-input"
+                placeholder="Masukkan email"
+                required>
+
+            @error('email')
+                <small class="text-danger">
+                    {{ $message }}
+                </small>
+            @enderror
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+        <div class="mb-3">
+            <label class="form-label text-white">
+                Password
+            </label>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+            <input
+                type="password"
+                name="password"
+                class="form-control login-input"
+                placeholder="Masukkan password"
+                required>
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            @error('password')
+                <small class="text-danger">
+                    {{ $message }}
+                </small>
+            @enderror
         </div>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+        <div class="mb-4">
+            <label class="form-label text-white">
+                Konfirmasi Password
+            </label>
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+            <input
+                type="password"
+                name="password_confirmation"
+                class="form-control login-input"
+                placeholder="Ulangi password"
+                required>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
+        <button
+            type="submit"
+            class="btn login-btn w-100">
+
+            Daftar Sekarang
+
+        </button>
+
+        <div class="text-center mt-4">
+
+            <a href="{{ route('login') }}"
+               class="text-decoration-none text-light">
+
+                Sudah punya akun?
+                <span class="text-info">
+                    Login
+                </span>
+
             </a>
 
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
         </div>
+
     </form>
+
 </x-guest-layout>

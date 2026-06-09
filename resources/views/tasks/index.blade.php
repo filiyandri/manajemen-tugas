@@ -9,53 +9,78 @@
 <p class="text-secondary mb-5">
     Kelola tugas kuliahmu dengan lebih terorganisir.
 </p>
+<div class="card-dark p-4 mb-4">
 
+    <div class="d-flex justify-content-between">
+
+        <h5 class="mb-3">
+            📊 Progress Tugas
+        </h5>
+
+        <strong>
+            {{ $progress }}%
+        </strong>
+
+    </div>
+
+    <div class="progress"
+         style="height:12px;">
+
+        <div class="progress-bar bg-success"
+             role="progressbar"
+             style="width: {{ $progress }}%;">
+
+        </div>
+
+    </div>
+
+    <small class="text-secondary mt-2 d-block">
+
+        {{ $completedTasks }}
+        dari
+        {{ $totalTasks }}
+        tugas selesai
+
+    </small>
+
+</div>
 <div class="row mb-4">
+<div class="col-md-4">
 
-    <div class="col-md-4">
+    <div class="card-dark filter-card" data-filter="all">
 
-        <div class="card-dark">
+        <h5>Total Tugas</h5>
 
-            <h5>Total Tugas</h5>
-
-            <h1>
-                {{ $tasks->count() }}
-            </h1>
-
-        </div>
-
-    </div>
-
-    <div class="col-md-4">
-
-        <div class="card-dark">
-
-            <h5>Pending</h5>
-
-            <h1>
-                {{ $tasks->where('status', 'pending')->count() }}
-            </h1>
-
-        </div>
-
-    </div>
-
-    <div class="col-md-4">
-
-        <div class="card-dark">
-
-            <h5>Selesai</h5>
-
-            <h1>
-                {{ $tasks->where('status', 'selesai')->count() }}
-            </h1>
-
-        </div>
+        <h1>{{ $tasks->count() }}</h1>
 
     </div>
 
 </div>
 
+<div class="col-md-4">
+
+    <div class="card-dark filter-card" data-filter="pending">
+
+        <h5>Pending</h5>
+
+        <h1>{{ $tasks->where('status', 'pending')->count() }}</h1>
+
+    </div>
+
+</div>
+
+<div class="col-md-4">
+
+    <div class="card-dark filter-card" data-filter="selesai">
+
+        <h5>Selesai</h5>
+
+        <h1>{{ $tasks->where('status', 'selesai')->count() }}</h1>
+
+    </div>
+
+</div>
+</div>
 <div class="card-dark">
 
     <div class="d-flex justify-content-between mb-4">
@@ -111,21 +136,62 @@
 
         <tbody>
 
-            @forelse($tasks as $task)
+           @forelse($tasks as $task)
 
-                <tr>
+    <tr class="task-row"
+        data-status="{{ $task->status }}">
 
-                    <td>
-                        {{ $task->title }}
-                    </td>
+        <td>
+            {{ $task->title }}
+        </td>
 
                     <td>
                         {{ $task->course }}
                     </td>
 
                     <td>
-                        {{ $task->deadline }}
-                    </td>
+
+@php
+
+    $deadline = \Carbon\Carbon::parse($task->deadline);
+
+    $today = \Carbon\Carbon::today();
+
+    $daysLeft = $today->diffInDays($deadline, false);
+
+@endphp
+
+@if($daysLeft < 0)
+
+    <span class="text-danger fw-bold">
+        🔴 Terlambat
+    </span>
+
+    <br>
+
+    <small>
+        {{ $task->deadline }}
+    </small>
+
+@elseif($daysLeft <= 3)
+
+    <span class="text-warning fw-bold">
+        🟠 {{ $daysLeft }} hari lagi
+    </span>
+
+    <br>
+
+    <small>
+        {{ $task->deadline }}
+    </small>
+
+@else
+
+    {{ $task->deadline }}
+
+@endif
+
+</td>
 
                     <td>
 
@@ -192,5 +258,46 @@
     </table>
 
 </div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const cards = document.querySelectorAll('.filter-card');
+    const rows = document.querySelectorAll('.task-row');
+
+    cards.forEach(card => {
+
+        card.addEventListener('click', function () {
+        cards.forEach(c => c.classList.remove('active'));
+
+this.classList.add('active');
+
+            const filter = this.dataset.filter;
+
+            rows.forEach(row => {
+
+                if(filter === 'all') {
+
+                    row.style.display = '';
+
+                } else {
+
+                    row.style.display =
+                        row.dataset.status === filter
+                        ? ''
+                        : 'none';
+
+                }
+
+            });
+
+        });
+
+    });
+
+});
+
+</script>
 
 @endsection

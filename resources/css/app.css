@@ -1,1 +1,30 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
+.form-control{
+    background:#162447 !important;
+    border:1px solid #243b6b !important;
+    color:white !important;
+}
+
+.form-control:focus{
+    background:#162447 !important;
+    color:white !important;
+    border-color:#7c3aed !important;
+    box-shadow:none !important;
+}
+
+.form-control::placeholder{
+    color:#9ca3af;
+}
+.filter-card{
+    cursor:pointer;
+    transition:.3s;
+}
+
+.filter-card.active{
+    border:1px solid #7c3aed;
+    box-shadow:0 0 25px rgba(124,58,237,.6);
+}
+
+.filter-card:hover{
+    transform:translateY(-5px);
+}

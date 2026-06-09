@@ -1,27 +1,119 @@
-<h1>Edit Tugas</h1>
+@extends('layouts.app')
 
-<form action="/tasks/{{ $task->id }}" method="POST">
-    @csrf
-    @method('PUT')
+@section('content')
 
-    <input type="text" name="title" value="{{ $task->title }}">
-    <br><br>
+<div class="container">
 
-    <input type="text" name="course" value="{{ $task->course }}">
-    <br><br>
+    <div class="card-dark p-4">
 
-    <input type="date" name="deadline" value="{{ $task->deadline }}">
-    <br><br>
+        <h2 class="mb-4 fw-bold">
+            ✏️ Edit Tugas
+        </h2>
 
-    <textarea name="description">{{ $task->description }}</textarea>
-    <br><br>
+        <form action="/tasks/{{ $task->id }}" method="POST">
 
-    <select name="status">
-        <option value="pending">Pending</option>
-        <option value="selesai">Selesai</option>
-    </select>
+            @csrf
+            @method('PUT')
 
-    <br><br>
+            <div class="mb-3">
 
-    <button type="submit">Update</button>
-</form>
+                <label class="form-label">
+                    Judul Tugas
+                </label>
+
+                <input
+                    type="text"
+                    name="title"
+                    value="{{ $task->title }}"
+                    class="form-control"
+                    required>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Mata Kuliah
+                </label>
+
+                <input
+                    type="text"
+                    name="course"
+                    value="{{ $task->course }}"
+                    class="form-control"
+                    required>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Deadline
+                </label>
+
+                <input
+                    type="date"
+                    name="deadline"
+                    value="{{ $task->deadline }}"
+                    class="form-control"
+                    required>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Status
+                </label>
+
+                <select
+                    name="status"
+                    class="form-control">
+
+                    <option value="pending"
+                        {{ $task->status == 'pending' ? 'selected' : '' }}>
+                        Pending
+                    </option>
+
+                    <option value="selesai"
+                        {{ $task->status == 'selesai' ? 'selected' : '' }}>
+                        Selesai
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="mb-4">
+
+                <label class="form-label">
+                    Deskripsi
+                </label>
+
+                <textarea
+                    name="description"
+                    rows="4"
+                    class="form-control">{{ $task->description }}</textarea>
+
+            </div>
+
+            <button class="btn btn-warning">
+
+                💾 Update Tugas
+
+            </button>
+
+            <a href="/tasks"
+               class="btn btn-secondary">
+
+                Kembali
+
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+@endsection
