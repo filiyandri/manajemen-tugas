@@ -3,7 +3,15 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
+Route::post('/api/register', [TaskController::class, 'apiRegister'])
+    ->withoutMiddleware([
+        \App\Http\Middleware\VerifyCsrfToken::class
+    ]);
 Route::get('/tasks/create', [TaskController::class, 'create'])->middleware('auth');
+Route::post('/api/login', [TaskController::class, 'apiLogin'])
+    ->withoutMiddleware([
+        \App\Http\Middleware\VerifyCsrfToken::class
+    ]);
 Route::get('/api/tasks', [TaskController::class, 'apiIndex']);
 Route::post('/api/tasks', [TaskController::class, 'apiStore'])
     ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);

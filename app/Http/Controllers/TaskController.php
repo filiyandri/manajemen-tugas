@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use App\Models\User;
 class TaskController extends Controller
+
 {
 public function index(Request $request)
 {
@@ -124,6 +127,66 @@ public function update(Request $request, Task $task)
     ]);
 
     return redirect('/tasks')->with('success', 'Tugas berhasil diupdate');
+}
+public function apiRegister(Request $request)
+{
+    $validator = Validator::make(
+        $request->all(),
+        [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6',
+        ]
+    );
+
+    if ($validator->fails()) {
+        return response()->json([
+            'success' => false,
+            'errors' => $validator->errors()
+        ], 422);
+    }
+
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => bcrypt($request->password),
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Register berhasil',
+        'user' => $user
+    ]);
+}
+public function apiLogin(Request $request)
+{
+    $user = User::where(
+        'email',
+        $request->email
+    )->first();
+
+    if (
+        !$user ||
+        !Hash::check(
+            $request->password,
+            $user->password
+        )
+    ) {
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Email atau Password salah'
+        ], 401);
+    }
+
+    return response()->json([
+        'success' => true,
+        'user' => [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+        ]
+    ]);
 }
 
 public function destroy(Task $task)
